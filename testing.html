@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok Mock</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin:0; padding:0; }
+body { font-family:'Inter',sans-serif; background:#000000; color:#fff; display:flex; min-height:100vh; }
+
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 250px; background-color: #1e1e1e;
+  padding: 20px; display: flex; flex-direction: column;
+  gap: 15px; height: 100vh;
+}
+.logo { display:flex; justify-content:center; margin-bottom:25px; }
+.tiktok-logo { width:200px; }
+.sidebar-item {
+  display:flex; align-items:center; gap:12px;
+  padding:10px; border-radius:10px; cursor:pointer;
+  color:#fff; transition: background 0.2s,color 0.2s;
+}
+.sidebar-item img.icon { width:20px; height:20px; filter:invert(100%); }
+.sidebar-item:hover { background:#2a2a2a; }
+.sidebar-item.active { background:#ff2d55; color:#fff; }
+.sidebar-item.active img.icon { filter:invert(0%); }
+
+@media (max-width:768px) {
+  .sidebar { flex-direction:row; width:100%; padding:10px; overflow-x:auto; height:auto; }
+  .sidebar-item { flex:none; }
+  .logo { margin-bottom:0; margin-right:-10px; }
+}
+
+/* ===== Main Content ===== */
+.main-content { flex:1; display:flex; flex-direction:column; padding:20px; overflow-y:auto; }
+
+/* ===== Profile Section ===== */
+.profile-section { display:flex; flex-direction:column; align-items:center; margin-bottom:25px; }
+.profile-pic { width:120px; height:120px; border-radius:50%; background-image: url('pfp1.png'); background-size: cover; background-position: top; background-repeat: no-repeat; margin-bottom:15px; }
+.username-lock { display:flex; align-items:center; gap:6px; margin-bottom:10px; }
+.username-lock .lock-icon { font-size:16px; }
+.display-name { color:#aaa; margin-bottom:15px; }
+.profile-buttons { display:flex; gap:10px; margin-bottom:15px; }
+.follow-btn { background:#ff2d55; border:none; padding:6px 16px; border-radius:4px; cursor:pointer; color:#fff; }
+.message-btn { background:#3a3a3a; border:none; padding:6px 16px; border-radius:4px; cursor:pointer; color:#fff; }
+.stats-row { display:flex; gap:20px; color:#aaa; }
+
+/* ===== Tabs (Icons) ===== */
+.tabs { display:flex; justify-content:center; gap:35px; margin:20px 0; border-bottom:1px solid #333; }
+.tab { padding-bottom:10px; cursor:pointer; display:flex; justify-content:center; align-items:center; }
+.tab.active img { border-bottom:2px solid #ff2d55; border-radius:2px; }
+.tab-icon { width:28px; height:28px; filter:invert(100%); transition: filter 0.2s; }
+.tab:hover img { filter:invert(50%); }
+
+/* ===== Posts Grid ===== */
+.posts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:15px; }
+.post-box {
+  background:#2a2a2a; height:200px; border-radius:8px; cursor:pointer;
+  display:flex; justify-content:center; align-items:center; color:#888; font-size:14px;
+  background-size:cover; background-position:center;
+}
+
+/* ===== Footer ===== */
+.footer { margin-top:40px; border-top:1px solid #333; padding-top:20px;
+  font-size:12px; color:#777; display:flex; justify-content:space-between; flex-wrap:wrap; }
+.footer div { margin-bottom:5px; }
+
+/* ===== Popup ===== */
+.popup-overlay {
+  position:fixed; top:0; left:0; right:0; bottom:0;
+  background:rgba(0,0,0,0.85); display:none;
+  justify-content:center; align-items:center; z-index:1000;
+}
+.popup {
+  background:#1e1e1e; border-radius:12px;
+  max-width:900px; width:90%; display:flex; overflow:hidden;
+  position:relative;
+}
+.image-section { flex:1; background:black; display:flex; justify-content:center; align-items:center; }
+.image-section img { width:100%; height:100%; object-fit:cover; }
+.info-section { width:350px; padding:20px; display:flex; flex-direction:column; gap:15px; }
+.close-btn { position:absolute; top:15px; right:25px; font-size:28px; cursor:pointer; }
+
+.caption { color:#ddd; margin-bottom:15px; }
+.info-section .profile-buttons { display:flex; flex-direction:column; gap:10px; }
+.like-btn, .share-btn, .comment-btn {
+  background:#3a3a3a; border:none; padding:6px 12px; border-radius:4px;
+  cursor:pointer; color:#fff; font-size:14px;
+}
+.like-btn:hover { background:#ff2d55; }
+.share-btn:hover, .comment-btn:hover { background:#555; }
+
+@media(max-width:768px){
+  body{flex-direction:column;}
+  .sidebar{flex-direction:row;width:100%;overflow-x:auto;gap:10px;}
+  .main-content{padding:10px;}
+  .popup{flex-direction:column;}
+  .info-section{width:100%;}
+  .image-section{height:300px;}
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="logo">
+    <img src="tiktoklogo.png" alt="TikTok Logo" class="tiktok-logo">
+  </div>
+  <div class="sidebar-item active"><img src="home.png" class="icon">For You</div>
+  <div class="sidebar-item"><img src="shop.png" class="icon">Shop</div>
+  <div class="sidebar-item"><img src="explore.png" class="icon">Explore</div>
+  <div class="sidebar-item"><img src="follow.jpg" class="icon">Following</div>
+  <div class="sidebar-item"><img src="friends.svg" class="icon">Friends</div>
+  <div class="sidebar-item"><img src="live.svg" class="icon">LIVE</div>
+  <div class="sidebar-item"><img src="message.svg" class="icon">Messages</div>
+  <div class="sidebar-item"><img src="activity.svg" class="icon">Activity</div>
+  <div class="sidebar-item"><img src="pfp.png" class="icon">Profile</div>
+  <div class="sidebar-item"><img src="more.png" class="icon">More</div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div class="profile-section">
+    <div class="profile-pic"></div>
+    <div class="username-lock"><strong>@CaptainOfficial</strong> <span class="lock-icon">🔒</span></div>
+    <div class="display-name">Captain Rafael</div>
+    <div class="profile-buttons">
+      <button class="follow-btn">Follow</button>
+      <button class="message-btn">Message</button>
+    </div>
+    <div class="stats-row">
+      <div><strong>100</strong> Following</div>
+      <div><strong>2.5K</strong> Followers</div>
+      <div><strong>10K</strong> Likes</div>
+    </div>
+  </div>
+
+  <!-- Tabs with icons -->
+  <div class="tabs">
+    <div class="tab active"><img src="posts.png" alt="Posts" class="tab-icon"></div>
+    <div class="tab"><img src="repost.png" alt="Reposts" class="tab-icon"></div>
+    <div class="tab"><img src="likes.png" alt="Likes" class="tab-icon"></div>
+    <div class="tab"><img src="drafts.png" alt="Drafts" class="tab-icon"></div>
+    <div class="tab"><img src="favorites.png" alt="Favorites" class="tab-icon"></div>
+  </div>
+
+  <!-- Posts Grid -->
+  <div class="posts-grid" id="postsGrid">
+    <div class="post-box" style="background-image:url('post1.png')" data-id="post1" onclick="openPopup(this.dataset.id)"></div>
+    <div class="post-box" style="background-image:url('post2.png')" data-id="post2" onclick="openPopup(this.dataset.id)"></div>
+    <div class="post-box" style="background-image:url('post3.png')" data-id="post3" onclick="openPopup(this.dataset.id)"></div>
+    <div class="post-box" style="background-image:url('post4.png')" data-id="post4" onclick="openPopup(this.dataset.id)"></div>
+    <div class="post-box" style="background-image:url('post5.png')" data-id="post5" onclick="openPopup(this.dataset.id)"></div>
+    <div class="post-box" style="background-image:url('post6.png')" data-id="post6" onclick="openPopup(this.dataset.id)"></div>
+    <div class="post-box" style="background-image:url('post7.png')" data-id="post7" onclick="openPopup(this.dataset.id)"></div>
+  </div>
+
+  <div class="footer">
+    <div>Company | Programs | Terms & Policies</div>
+    <div>© 2025 TikTok</div>
+  </div>
+</div>
+
+<!-- Popup -->
+<div class="popup-overlay" id="popup">
+  <div class="popup">
+    <div class="image-section">
+      <img src="" alt="Post Image">
+    </div>
+    <div class="info-section">
+      <div class="username-lock"><strong>@username</strong> <span class="lock-icon">🔒</span></div>
+      <div class="display-name">Display Name</div>
+      <div class="caption">Caption goes here</div>
+      <div class="profile-buttons">
+        <button class="like-btn">❤️ Like</button>
+        <button class="share-btn">🔗 Share</button>
+        <button class="comment-btn">💬 Comment</button>
+      </div>
+    </div>
+    <div class="close-btn" onclick="closePopup()">×</div>
+  </div>
+</div>
+
+<script>
+const posts = [
+  { id:'post1', image:'post1.png', username:'@CaptainOfficial', displayName:'The Journey Begins 🌊', caption:'Day 1. Leaving Spain today with 80 men and 3 ships. The King says there’s gold, glory, and God waiting beyond the horizon. I just hope there’s land before we run out of bread. Wish me luck — Spain’s counting on me. #Voyage #ColumbianExchange #ExplorerTok' },
+  { id:'post2', image:'post2.png', username:'@CaptainOfficial', displayName:'After 3 Months at Sea 😭🌴', caption:'WE FOUND LAND!! After months of storms, sea rot, and fish-only meals… I see green hills and palm trees ahead. I’m calling it Isla de Solara — Island of Sunlight. Never seen anything like this. #NewWorld #Discovery #SpainToSolara' },
+  { id:'post3', image:'post3.png', username:'@CaptainOfficial', displayName:'Meeting the Locals 👀', caption:'The people here wear bright cloth and trade pearls for mirrors. They’re chill and super curious about us. We traded spices for metal tools today. I promised peace… if they stay friendly. #FirstContact #CulturalExchange #ExchangeTok' },
+  { id:'post4', image:'post4.png', username:'@CaptainOfficial', displayName:'Bro… GOLD in the RIVERS 😭🔥', caption:'Not even joking — gold flakes in the water. Silver in the hills. Coconuts and mangoes growing everywhere. The people showed me a spice that smells like heaven. Spain is about to EAT. #Resources #GoldRush #SolaraFinds #ColumbianExchange' },
+  { id:'post5', image:'post5.png', username:'@CaptainOfficial', displayName:'Farms = Fortune 🌱', caption:'Set up our first sugarcane fields today. Rice and coconut farms too. The people help out — they work some days and get Spanish protection + trade goods in return. I call it teamwork (the King calls it ‘encomienda’ - colonial labor system). #FarmingTok #SolaraLife #EconomyUp' },
+  { id:'post6', image:'post6.png', username:'@CaptainOfficial', displayName:'The Great Battle for Solara 😬⚔️', caption:'Not everything’s been sunshine. Chief Lumaran’s warriors tried to push us off the coast last night. We had cannons. They didn’t. Treaty signed this morning — Solara now flies the Spanish flag. History’s made. #Conquest #Empire #BattleTok' },
+  { id:'post7', image:'post6.png', username:'@CaptainOfficial', displayName:'Why You Should Move Here 😍⛵️', caption:'Tired of paying taxes in Spain? Come to Isla de Solara! Warm weather, gold in rivers, farms booming, and beaches for days. Bring your faith, your family, and your courage — paradise is waiting 🌞 #NewWorld #JoinTheVoyage #ColonizerTok' }
+];
+
+function openPopup(postId){
+  const post = posts.find(p => p.id === postId);
+  if(!post) return;
+  const popup = document.getElementById('popup');
+  const imgEl = popup.querySelector('img');
+  imgEl.src = post.image;
+  popup.querySelector('.username-lock strong').textContent = post.username;
+  popup.querySelector('.display-name').textContent = post.displayName;
+  popup.querySelector('.caption').textContent = post.caption;
+  popup.style.display = 'flex';
+}
+
+function closePopup(){
+  const popup = document.getElementById('popup');
+  popup.style.display = 'none';
+}
+</script>
+</body>
+</html>
